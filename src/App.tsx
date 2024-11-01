@@ -4,7 +4,7 @@ import StartPage from "./components/StartPage";
 import QuizWrapper from "./components/QuizWrapper";
 import SettingsPage from "./components/SettingsPage";
 import { questions as allQuestions } from "./data/questions";
-import settingsIcon from "./assets/setting.png"; // Importiere das Settings-Icon
+import { Cog } from "lucide-react";
 import { useParams } from "react-router-dom";
 
 const App: React.FC = () => {
@@ -18,9 +18,8 @@ const App: React.FC = () => {
   return (
     <Router>
       <div className="relative">
-        {/* Settings Button */}
         <Link to="/settings" className="absolute top-4 right-4">
-          <img src={settingsIcon} alt="Settings" className="w-8 h-8" />
+          <Cog size={18} />
         </Link>
 
         <Routes>
@@ -36,7 +35,6 @@ const App: React.FC = () => {
   );
 };
 
-// Hier definieren wir die Props für die Game-Komponente
 interface GameProps {
   colors: {
     primary: string;
@@ -56,7 +54,7 @@ const Game: React.FC<GameProps> = ({ colors }) => {
   return (
     <QuizWrapper
       questions={allQuestions}
-      mode={mode.charAt(0).toUpperCase() + mode.slice(1)} // Übergeben mit großem Anfangsbuchstaben
+      mode={mode.charAt(0).toUpperCase() + mode.slice(1)}
       colors={colors}
     />
   );
