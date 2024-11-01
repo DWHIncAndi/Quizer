@@ -15,7 +15,7 @@ interface QuizWrapperProps {
 
 const QuizWrapper: React.FC<QuizWrapperProps> = ({
   questions,
-  mode, // Mode ist jetzt korrekt als Prop vorhanden
+  mode,
   colors,
 }) => {
   let numQuestions = 0;
@@ -42,25 +42,13 @@ const QuizWrapper: React.FC<QuizWrapperProps> = ({
       timeLimit = 300;
       break;
     case "Hardcore":
-      numQuestions = 125;
+      numQuestions = 100;
       skips = 5;
       timeLimit = 480;
-      break;
-    case "Asian":
-      numQuestions = questions.filter(
-        (q: Question) => q.difficulty === "asian"
-      ).length;
-      skips = 0;
-      timeLimit = 30;
       break;
     default:
       break;
   }
-
-  const filteredQuestions =
-    mode === "asian"
-      ? questions.filter((q: Question) => q.difficulty === "asian")
-      : questions.slice(0, numQuestions);
 
   function shuffleArray<T>(array: T[]): T[] {
     for (let i = array.length - 1; i > 0; i--) {
@@ -70,8 +58,8 @@ const QuizWrapper: React.FC<QuizWrapperProps> = ({
     return array;
   }
 
-  // Optional: Fragen mischen, falls notwendig
-  const shuffledQuestions = shuffleArray(filteredQuestions);
+  // Fragen mischen
+  const shuffledQuestions = shuffleArray(questions).slice(0, numQuestions);
 
   return (
     <Quiz
@@ -79,7 +67,7 @@ const QuizWrapper: React.FC<QuizWrapperProps> = ({
       initialSkips={skips}
       initialTime={timeLimit}
       colors={colors}
-      mode={mode} // den Mode-Parameter an Quiz übergeben
+      mode={mode}
     />
   );
 };
