@@ -1,6 +1,7 @@
 import React from "react";
 import Quiz from "./Quiz";
 import { Question } from "../data/questions";
+import { shuffle } from "../utils/shuffle";
 
 interface QuizWrapperProps {
   questions: Question[];
@@ -15,14 +16,13 @@ interface QuizWrapperProps {
 
 const QuizWrapper: React.FC<QuizWrapperProps> = ({
   questions,
-  mode, // Mode ist jetzt korrekt als Prop vorhanden
+  mode,
   colors,
 }) => {
   let numQuestions = 0;
   let skips = 0;
   let timeLimit = 0;
 
-  // Modus mit erstem Großbuchstaben
   const formattedMode = mode.charAt(0).toUpperCase() + mode.slice(1);
 
   switch (formattedMode) {
@@ -62,16 +62,8 @@ const QuizWrapper: React.FC<QuizWrapperProps> = ({
       ? questions.filter((q: Question) => q.difficulty === "asian")
       : questions.slice(0, numQuestions);
 
-  function shuffleArray<T>(array: T[]): T[] {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-  }
-
   // Optional: Fragen mischen, falls notwendig
-  const shuffledQuestions = shuffleArray(filteredQuestions);
+  const shuffledQuestions = shuffle(filteredQuestions);
 
   return (
     <Quiz
