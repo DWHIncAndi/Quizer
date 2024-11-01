@@ -17,69 +17,56 @@ type QuestionProps = {
 const Question: React.FC<QuestionProps> = ({
   questionData,
   onAnswer,
-  onSkip,
 }) => {
   const [shuffledOptions, setShuffledOptions] = useState<string[]>([]);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [isFading, setIsFading] = useState(false);
 
   useEffect(() => {
-    setShuffledOptions(shuffle([...questionData.options]));
+    const options = shuffle([...questionData.options]);
+    setShuffledOptions(options);
     setSelectedAnswer(null);
     setIsFading(false);
   }, [questionData]);
 
   const handleAnswerClick = (option: string) => {
+    if (selectedAnswer) return;
+
     clickSound.play();
     setSelectedAnswer(option);
     setIsFading(true);
+
     setTimeout(() => {
       onAnswer(option);
       setIsFading(false);
     }, 500);
   };
 
-  return (
-    <div
-      className={`flex flex-col items-center transition-opacity duration-500 ${isFading ? "opacity-0" : "opacity-100"
-        }`}
-    >
-      <h2 className="text-xl font-medium mb-6 text-gray-800">
-        {questionData.question}
-      </h2>
-      <div className="grid grid-cols-2 gap-4 mb-4">
-        {shuffledOptions.map((option) => {
-          const isCorrect = questionData.correctAnswers.includes(option);
-          const isSelected = option === selectedAnswer;
-          const buttonColor = selectedAnswer
-            ? isCorrect
-              ? "bg-green-500"
-              : isSelected
-                ? "bg-red-500"
-                : "bg-red-500"
-            : "bg-blue-500 hover:bg-blue-600";
+  const getButtonClass = (option: string) => {
+    const isCorrect = questionData.correctAnswers.includes(option);
+    const isSelected = option === selectedAnswer;
 
-          return (
-            <button
-              key={option}
-              onClick={() => handleAnswerClick(option)}
-              className={`${buttonColor} text-white py-2 px-4 rounded-lg`}
-              disabled={!!selectedAnswer}
-            >
-              {option}
-            </button>
-          );
-        })}
+    if (isSelected) {
+      return isCorrect ? "bg-green-400" : "bg-red-400";
+    }
+    return "bg-blue-400 hover:bg-blue-500 hover:scale-95 border-2 border-blue-400";
+  };
+
+  return (
+    <div className={`flex flex-col items-center transition-opacity duration-500 ${isFading ? "opacity-0" : "opacity-100"}`}>
+      <h2 className="text-xl font-medium mb-6 text-zinc-100">{questionData.question}</h2>
+      <div className="grid grid-cols-2 gap-2 mb-4 w-full max-w-lg">
+        {shuffledOptions.map((option) => (
+          <button
+            key={option}
+            onClick={() => handleAnswerClick(option)}
+            className={`text-white py-2 px-4 rounded-xl transition-all duration-200 ease-in-out ${getButtonClass(option)}`}
+            disabled={!!selectedAnswer}
+          >
+            {option}
+          </button>
+        ))}
       </div>
-      <button
-        onClick={() => {
-          clickSound.play();
-          onSkip();
-        }}
-        className="text-red-500 underline hover:text-red-600"
-      >
-        Skip
-      </button>
     </div>
   );
 };
