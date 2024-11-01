@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import StartPage from "./components/StartPage";
 import QuizWrapper from "./components/QuizWrapper";
@@ -8,18 +8,27 @@ import { Cog } from "lucide-react";
 import { useParams } from "react-router-dom";
 
 const App: React.FC = () => {
-  const [colors, setColors] = useState({
-    primary: "#000000",
-    secondary: "#FFFFFF",
-    tertiary: "#CCCCCC",
-    quaternary: "#EEEEEE",
+  const [colors, setColors] = useState(() => {
+    const savedColors = localStorage.getItem("colors");
+    return savedColors
+      ? JSON.parse(savedColors)
+      : {
+        primary: "#000000",
+        secondary: "#FFFFFF",
+        tertiary: "#CCCCCC",
+        quaternary: "#EEEEEE",
+      };
   });
+
+  useEffect(() => {
+    localStorage.setItem("colors", JSON.stringify(colors));
+  }, [colors]);
 
   return (
     <Router>
-      <div className="relative">
-        <Link to="/settings" className="absolute top-4 right-4">
-          <Cog size={18} />
+      <div className="relative" style={{ backgroundColor: colors.quaternary }}>
+        <Link to="/settings" className="text-white absolute top-4 right-4 p-2 rounded-md duration-100 transition-all hover:bg-zinc-700">
+          <Cog size={32} />
         </Link>
 
         <Routes>
