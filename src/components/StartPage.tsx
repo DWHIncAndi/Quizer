@@ -1,4 +1,3 @@
-// src/components/StartPage.tsx
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import Tooltip from "./Tooltip";
@@ -7,50 +6,28 @@ const StartPage: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-[#262626] via-[#78716c] to-[#475569]">
-      <h1 className="text-4xl font-bold mb-8 text-white">Select Quiz Mode</h1>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-[#262626] via-[#78716c] to-[#475569] p-4">
+      <h1 className="text-5xl font-extrabold mb-12 text-white text-center">
+        Select Quiz Mode
+      </h1>
 
-      <div className="grid grid-cols-2 gap-2">
-        <Tooltip content="Time: 8 min, Skips: 10, Questions: 20">
-          <button
-            onClick={() => navigate("/game/easy")}
-            className="bg-zinc-600 text-zinc-200 py-10 px-12 text-xl rounded-md shadow-md transition duration-200 hover:bg-lime-600 w-full"
-          >
-            Easy
-          </button>
-        </Tooltip>
-        <Tooltip content="Time: 5 min, Skips: 5, Questions: 40">
-          <button
-            onClick={() => navigate("/game/normal")}
-            className="bg-zinc-600 text-zinc-200 py-10 px-12 text-xl rounded-md shadow-md transition duration-200 hover:bg-amber-600 w-full"
-          >
-            Normal
-          </button>
-        </Tooltip>
-        <Tooltip content="Time: 5 min, Skips: 3, Questions: 80">
-          <button
-            onClick={() => navigate("/game/hard")}
-            className="bg-zinc-600 text-zinc-200 py-10 px-12 text-xl rounded-md shadow-md transition duration-200 hover:bg-red-600 w-full"
-          >
-            Hard
-          </button>
-        </Tooltip>
-        <Tooltip content="Time: 8 min, Skips: 5, Questions: 125">
-          <button
-            onClick={() => navigate("/game/hardcore")}
-            className="bg-zinc-600 text-zinc-200 py-10 px-12 text-xl rounded-md shadow-md transition duration-200 hover:bg-red-900 w-full"
-          >
-            Hardcore
-          </button>
-        </Tooltip>
-        <Tooltip content="Time: 30s, No Skips, One Wrong Game Over">
-          <button
-            onClick={() => navigate("/game/asian")}
-            className="bg-zinc-600 text-zinc-200 py-10 px-12 text-xl rounded-md shadow-md transition duration-200 hover:bg-red-950 w-full"
-          >
-            Asian
-          </button>
-        </Tooltip>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-4xl">
+        {[
+          { mode: "easy", time: "8 min", skips: "10", questions: "20", color: "lime-600" },
+          { mode: "normal", time: "5 min", skips: "5", questions: "40", color: "amber-600" },
+          { mode: "hard", time: "5 min", skips: "3", questions: "80", color: "red-600" },
+          { mode: "hardcore", time: "8 min", skips: "5", questions: "125", color: "red-900" },
+          { mode: "asian", time: "30s", skips: "0", questions: "1", color: "red-950" },
+        ].map(({ mode, time, skips, questions, color }) => (
+          <Tooltip delay={800} fontSize="text-md" key={mode} content={`Time: ${time}, Skips: ${skips}, Questions: ${questions}`}>
+            <button
+              onClick={() => navigate(`/game/${mode}`)}
+              className={`bg-zinc-600 text-zinc-200 py-10 px-12 text-xl rounded-xl shadow-lg transition duration-300 ease-in-out transform hover:scale-105 hover:bg-${color} w-full`}
+            >
+              {mode.charAt(0).toUpperCase() + mode.slice(1)}
+            </button>
+          </Tooltip>
+        ))}
       </div>
     </div>
   );
