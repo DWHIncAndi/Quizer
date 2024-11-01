@@ -35,20 +35,12 @@ const StartPage: React.FC = () => {
             Hard
           </button>
         </Tooltip>
-        <Tooltip content="Time: 8 min, Skips: 5, Questions: 125">
+        <Tooltip content="Time: 8 min, Skips: 5, Questions: 100">
           <button
             onClick={() => navigate("/game/hardcore")}
             className="bg-zinc-600 text-zinc-200 py-10 px-12 text-xl rounded-md shadow-md transition duration-200 hover:bg-red-900 w-full"
           >
             Hardcore
-          </button>
-        </Tooltip>
-        <Tooltip content="Time: 30s, No Skips, One Wrong Game Over">
-          <button
-            onClick={() => navigate("/game/asian")}
-            className="bg-zinc-600 text-zinc-200 py-10 px-12 text-xl rounded-md shadow-md transition duration-200 hover:bg-red-950 w-full"
-          >
-            Asian
           </button>
         </Tooltip>
       </div>

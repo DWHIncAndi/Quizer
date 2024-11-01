@@ -4,8 +4,8 @@ import Score from "./Score";
 import Timer from "./Timer";
 import winSound from "../assets/win.mp3";
 import loseSound from "../assets/lose.mp3";
+import clickSound from "../assets/click.mp3";
 
-// Definition des QuizProps Typs
 type QuizProps = {
   questions: {
     question: string;
@@ -42,30 +42,31 @@ const Quiz: React.FC<QuizProps> = ({
   const [isWinner, setIsWinner] = useState(false);
 
   useEffect(() => {
-    if (timeLeft <= 0) {
-      setIsGameOver(true);
-      new Audio(loseSound).play(); // Game Over Sound
-    }
+    if (timeLeft <= 0) setIsGameOver(true);
   }, [timeLeft]);
+
+  useEffect(() => {
+    if (isGameOver) {
+      new Audio(loseSound).play();
+    } else if (isWinner) {
+      new Audio(winSound).play();
+    }
+  }, [isGameOver, isWinner]);
 
   const handleAnswer = (selectedAnswer: string) => {
     if (isGameOver || isWinner) return;
+
+    new Audio(clickSound).play();
 
     const isCorrect =
       shuffledQuestions[currentQuestion].correctAnswers.includes(
         selectedAnswer
       );
-    if (!isCorrect && mode === "asian") {
-      setIsGameOver(true);
-      new Audio(loseSound).play(); // Game Over im "Asian" Mode
-      return;
-    }
 
     setScore(isCorrect ? score + 1 : score);
 
     if (currentQuestion + 1 >= shuffledQuestions.length) {
       setIsWinner(true);
-      new Audio(winSound).play(); // Win Sound
     } else {
       setCurrentQuestion(currentQuestion + 1);
     }
@@ -113,6 +114,7 @@ const Quiz: React.FC<QuizProps> = ({
               setCurrentQuestion((prev) =>
                 prev + 1 >= shuffledQuestions.length ? prev : prev + 1
               );
+              new Audio(clickSound).play(); // Sound bei Skip
             }
           }}
         />

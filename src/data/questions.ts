@@ -165,12 +165,6 @@ export const questions: Question[] = [
     difficulty: "normal",
   },
   {
-    question: "In which year did the Titanic sink?",
-    options: ["1912", "1905", "1920", "1898"],
-    correctAnswers: ["1912"],
-    difficulty: "hard",
-  },
-  {
     question: "Which country has the longest coastline?",
     options: ["Canada", "Australia", "Russia", "USA"],
     correctAnswers: ["Canada"],
@@ -181,17 +175,6 @@ export const questions: Question[] = [
     options: ["Jupiter", "Saturn", "Earth", "Neptune"],
     correctAnswers: ["Jupiter"],
     difficulty: "normal",
-  },
-  {
-    question: "Who is known as the father of modern physics?",
-    options: [
-      "Albert Einstein",
-      "Isaac Newton",
-      "Galileo Galilei",
-      "Stephen Hawking",
-    ],
-    correctAnswers: ["Albert Einstein"],
-    difficulty: "hard",
   },
   {
     question: "Which human organ can regenerate?",
@@ -217,56 +200,9 @@ export const questions: Question[] = [
     difficulty: "hard",
   },
   {
-    question: "Who was the first man in space?",
-    options: ["Yuri Gagarin", "Neil Armstrong", "Buzz Aldrin", "John Glenn"],
-    correctAnswers: ["Yuri Gagarin"],
-    difficulty: "hard",
-  },
-  {
-    question: "What is the boiling point of water?",
-    options: ["100°C", "80°C", "90°C", "110°C"],
-    correctAnswers: ["100°C"],
-    difficulty: "easy",
-  },
-  {
-    question: "What is the smallest unit of matter?",
-    options: ["Atom", "Molecule", "Proton", "Electron"],
-    correctAnswers: ["Atom"],
-    difficulty: "easy",
-  },
-  {
-    question: "Who was the first president of the United States?",
-    options: [
-      "George Washington",
-      "Abraham Lincoln",
-      "Thomas Jefferson",
-      "John Adams",
-    ],
-    correctAnswers: ["George Washington"],
-    difficulty: "normal",
-  },
-  {
-    question: "What is the main ingredient in sushi?",
-    options: ["Rice", "Fish", "Seaweed", "Soy Sauce"],
-    correctAnswers: ["Rice"],
-    difficulty: "easy",
-  },
-  {
     question: "What is the atomic number of carbon?",
     options: ["6", "12", "8", "14"],
     correctAnswers: ["6"],
-    difficulty: "normal",
-  },
-  {
-    question: "How many teeth does a human adult have?",
-    options: ["32", "28", "36", "30"],
-    correctAnswers: ["32"],
-    difficulty: "normal",
-  },
-  {
-    question: "What is the main ingredient in traditional Japanese sake?",
-    options: ["Rice", "Barley", "Wheat", "Soybeans"],
-    correctAnswers: ["Rice"],
     difficulty: "normal",
   },
   {
@@ -607,48 +543,6 @@ export const questions: Question[] = [
     difficulty: "easy",
   },
 
-  // Normal Questions
-  {
-    question: "What is the capital of Spain?",
-    options: ["Madrid", "Barcelona", "Valencia", "Seville"],
-    correctAnswers: ["Madrid"],
-    difficulty: "normal",
-  },
-  {
-    question: "Which planet is known as the Earth's twin?",
-    options: ["Venus", "Mars", "Jupiter", "Mercury"],
-    correctAnswers: ["Venus"],
-    difficulty: "normal",
-  },
-  {
-    question: "What is the largest species of shark?",
-    options: [
-      "Whale Shark",
-      "Great White Shark",
-      "Tiger Shark",
-      "Hammerhead Shark",
-    ],
-    correctAnswers: ["Whale Shark"],
-    difficulty: "normal",
-  },
-  {
-    question: "Who was the first female prime minister of the UK?",
-    options: [
-      "Margaret Thatcher",
-      "Theresa May",
-      "Angela Merkel",
-      "Indira Gandhi",
-    ],
-    correctAnswers: ["Margaret Thatcher"],
-    difficulty: "normal",
-  },
-  {
-    question: "What is the capital city of Australia?",
-    options: ["Canberra", "Sydney", "Melbourne", "Brisbane"],
-    correctAnswers: ["Canberra"],
-    difficulty: "normal",
-  },
-
   // Hard Questions
   {
     question: "What is the longest river in the world?",
@@ -762,12 +656,6 @@ export const questions: Question[] = [
 
   // Normal Questions
   {
-    question: "What is the main ingredient in pesto?",
-    options: ["Basil", "Oregano", "Parsley", "Cilantro"],
-    correctAnswers: ["Basil"],
-    difficulty: "normal",
-  },
-  {
     question: "Who painted 'Starry Night'?",
     options: [
       "Vincent van Gogh",
@@ -779,24 +667,11 @@ export const questions: Question[] = [
     difficulty: "normal",
   },
   {
-    question: "What is the capital city of Italy?",
-    options: ["Rome", "Florence", "Venice", "Milan"],
-    correctAnswers: ["Rome"],
-    difficulty: "normal",
-  },
-  {
     question: "How many legs does a spider have?",
     options: ["8", "6", "4", "10"],
     correctAnswers: ["8"],
     difficulty: "normal",
   },
-  {
-    question: "What is the largest island in the world?",
-    options: ["Greenland", "New Guinea", "Borneo", "Madagascar"],
-    correctAnswers: ["Greenland"],
-    difficulty: "normal",
-  },
-
   // Hard Questions
   {
     question: "What is the chemical symbol for silver?",
@@ -808,12 +683,6 @@ export const questions: Question[] = [
     question: "Which planet is the hottest in the solar system?",
     options: ["Venus", "Mercury", "Mars", "Jupiter"],
     correctAnswers: ["Venus"],
-    difficulty: "hard",
-  },
-  {
-    question: "What is the main ingredient in a traditional Greek salad?",
-    options: ["Tomatoes", "Cucumbers", "Feta Cheese", "Olives"],
-    correctAnswers: ["Feta Cheese"],
     difficulty: "hard",
   },
   {
@@ -865,71 +734,4 @@ export const questions: Question[] = [
     correctAnswers: ["Transport oxygen"],
     difficulty: "hardcore",
   },
-
-  // Asian
-  {
-    question: "What particle is responsible for electromagnetic force?",
-    options: ["Photon", "Electron", "Neutron", "Proton"],
-    correctAnswers: ["Photon"],
-    difficulty: "asian",
-  },
-  {
-    question:
-      "What is the term for a group of stars that forms a recognizable pattern?",
-    options: ["Constellation", "Galaxy", "Cluster", "Nebula"],
-    correctAnswers: ["Constellation"],
-    difficulty: "asian",
-  },
-  {
-    question:
-      "Which element has the highest melting point of any known substance?",
-    options: ["Carbon", "Tungsten", "Osmium", "Iridium"],
-    correctAnswers: ["Tungsten"],
-    difficulty: "asian",
-  },
-  {
-    question:
-      "In quantum mechanics, what principle states that certain pairs of properties cannot be precisely measured simultaneously?",
-    options: [
-      "Heisenberg Uncertainty Principle",
-      "Pauli Exclusion Principle",
-      "Wave-Particle Duality",
-      "Quantum Superposition",
-    ],
-    correctAnswers: ["Heisenberg Uncertainty Principle"],
-    difficulty: "asian",
-  },
-  {
-    question:
-      "Which type of particle was theorized by Paul Dirac and discovered as a mirror image of matter?",
-    options: ["Antimatter", "Neutrino", "Photon", "Quark"],
-    correctAnswers: ["Antimatter"],
-    difficulty: "asian",
-  },
-  {
-    question: "What is the Riemann Hypothesis primarily concerned with?",
-    options: [
-      "Distribution of prime numbers",
-      "Sum of natural numbers",
-      "Behavior of fractals",
-      "Properties of irrational numbers",
-    ],
-    correctAnswers: ["Distribution of prime numbers"],
-    difficulty: "asian",
-  },
-  {
-    question:
-      "In topology, what is the term for a shape that can be continuously transformed into a circle without tearing or gluing?",
-    options: ["Homeomorphic", "Isomorphic", "Orthogonal", "Affine"],
-    correctAnswers: ["Homeomorphic"],
-    difficulty: "asian",
-  },
-  {
-    question: "What is the value of the infinite series ∑(n=1 to ∞) 1/n²?",
-    options: ["π²/6", "e", "ln(2)", "π/4"],
-    correctAnswers: ["π²/6"],
-    difficulty: "asian",
-  },
-
-  // ... (and more if needed, until you reach 200 total)
 ];
