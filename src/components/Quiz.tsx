@@ -2,7 +2,10 @@ import React, { useState, useEffect } from "react";
 import Question from "./Question";
 import Score from "./Score";
 import Timer from "./Timer";
+import winSound from "../assets/win.mp3";
+import loseSound from "../assets/lose.mp3";
 
+// Definition des QuizProps Typs
 type QuizProps = {
   questions: {
     question: string;
@@ -39,20 +42,33 @@ const Quiz: React.FC<QuizProps> = ({
   const [isWinner, setIsWinner] = useState(false);
 
   useEffect(() => {
-    if (timeLeft <= 0) setIsGameOver(true);
+    if (timeLeft <= 0) {
+      setIsGameOver(true);
+      new Audio(loseSound).play(); // Game Over Sound
+    }
   }, [timeLeft]);
 
   const handleAnswer = (selectedAnswer: string) => {
     if (isGameOver || isWinner) return;
-  const isCorrect =
-    shuffledQuestions[currentQuestion].correctAnswers.includes(selectedAnswer);
-  if (!isCorrect && mode === "asian") {
-    setIsGameOver(true); // Game Over bei einer falschen Antwort in "Asian"
-    return;
-  }
+
+    const isCorrect =
+      shuffledQuestions[currentQuestion].correctAnswers.includes(
+        selectedAnswer
+      );
+    if (!isCorrect && mode === "asian") {
+      setIsGameOver(true);
+      new Audio(loseSound).play(); // Game Over im "Asian" Mode
+      return;
+    }
+
     setScore(isCorrect ? score + 1 : score);
-    if (currentQuestion + 1 >= shuffledQuestions.length) setIsWinner(true);
-    else setCurrentQuestion(currentQuestion + 1);
+
+    if (currentQuestion + 1 >= shuffledQuestions.length) {
+      setIsWinner(true);
+      new Audio(winSound).play(); // Win Sound
+    } else {
+      setCurrentQuestion(currentQuestion + 1);
+    }
   };
 
   if (isGameOver) {
@@ -79,14 +95,12 @@ const Quiz: React.FC<QuizProps> = ({
     <div className="flex flex-col items-center bg-gray-100 min-h-screen p-6">
       <h1 className="text-3xl font-bold mb-4">{mode} Mode Quiz</h1>
       <div className="w-full max-w-md bg-white p-6 shadow-lg rounded-lg">
-        {/* Timer, Fortschritt und Skips */}
         <Timer
           duration={timeLeft}
           onTimeUp={() => setIsGameOver(true)}
           setTimeLeft={setTimeLeft}
         />
         <p className="text-center text-lg font-semibold mb-4">
-          {/* Fortschrittszähler */}
           {currentQuestion + 1}/{shuffledQuestions.length}
         </p>
         <Score score={score} skips={skips} />

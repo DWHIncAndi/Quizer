@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import winSound from "./assets/win.mp3";
-import loseSound from "./assets/lose.mp3";
-import clickSound from "./assets/click.mp3";
+
+const clickSound = new Audio(require("../assets/click.mp3"));
 
 type QuestionProps = {
   questionData: {
@@ -41,11 +40,6 @@ const Question: React.FC<QuestionProps> = ({
     setSelectedAnswer(option);
     setIsFading(true); // Startet das Fade-Out
     setTimeout(() => {
-      if (questionData.correctAnswers.includes(option)) {
-        winSound.play(); // Spiele Gewinn-Sound
-      } else {
-        loseSound.play(); // Spiele Verlust-Sound
-      }
       onAnswer(option); // Antwort übergeben, wenn die Animation endet
       setIsFading(false); // Setzt für die neue Frage das Fade-In zurück
     }, 500); // Zeit für das Fade-Out (500 ms)
