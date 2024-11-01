@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Question from "./Question";
 import Score from "./Score";
 import Timer from "./Timer";
+import Confetti from 'react-confetti';
 
 import winSoundFile from "../assets/win.mp3";
 import loseSoundFile from "../assets/lose.mp3";
@@ -42,10 +44,10 @@ const Quiz: React.FC<QuizProps> = ({
   initialTime,
   mode,
   colors = {
-    primary: "#000000", // Standardfarbe für primary
-    secondary: "#FFFFFF", // Standardfarbe für secondary
-    tertiary: "#4CAF50", // Standardfarbe für richtige Antworten
-    quaternary: "#F44336", // Standardfarbe für falsche Antworten
+    primary: "#000000",
+    secondary: "#FFFFFF",
+    tertiary: "#4CAF50",
+    quaternary: "#F44336",
   },
 }) => {
   const [shuffledQuestions] = useState(
@@ -58,9 +60,7 @@ const Quiz: React.FC<QuizProps> = ({
   const [isGameOver, setIsGameOver] = useState(false);
   const [isWinner, setIsWinner] = useState(false);
 
-  const winSound = new Audio(winSoundFile);
-  const loseSound = new Audio(loseSoundFile);
-  const clickSound = new Audio(clickSoundFile);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (timeLeft <= 0) {
@@ -68,14 +68,6 @@ const Quiz: React.FC<QuizProps> = ({
     }
   }, [timeLeft]);
 
-  useEffect(() => {
-    if (isGameOver) {
-      loseSound.play();
-    } else if (isWinner) {
-      winSound.play();
-    }
-    //eslint-disable-next-line
-  }, [isGameOver, isWinner]);
 
   /**
    * Handles answer selection by checking correctness and updating the score or ending the game based on mode.
@@ -87,7 +79,13 @@ const Quiz: React.FC<QuizProps> = ({
     const isCorrect =
       shuffledQuestions[currentQuestion].correctAnswers.includes(selectedAnswer);
 
+    // Play click sound on answer selection
+    const clickSound = new Audio(clickSoundFile);
+    clickSound.play();
+
     if (!isCorrect && mode === "asian") {
+      const loseSound = new Audio(loseSoundFile);
+      loseSound.play();
       setIsGameOver(true);
       return;
     }
@@ -97,18 +95,47 @@ const Quiz: React.FC<QuizProps> = ({
     }
 
     if (currentQuestion + 1 >= shuffledQuestions.length) {
+      const winSound = new Audio(winSoundFile);
+      winSound.play();
       setIsWinner(true);
     } else {
       setCurrentQuestion(currentQuestion + 1);
     }
   };
 
+  const handleRestart = () => {
+    setScore(0);
+    setSkips(initialSkips);
+    setCurrentQuestion(0);
+    setTimeLeft(initialTime);
+    setIsGameOver(false);
+    setIsWinner(false);
+  };
+
+  const handleHome = () => {
+    navigate("/");
+  };
+
   if (isGameOver) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen"
         style={{ backgroundColor: colors.quaternary }}>
-        <h1 className="text-6xl font-extrabold mb-4" style={{ color: colors.primary }}>Game Over</h1>
-        <p className="text-2xl" style={{ color: colors.secondary }}>Your Score: {score}</p>
+        <h1 className="text-6xl font-extrabold mb-4" style={{ color: colors.primary }}>❌ Game Over</h1>
+        <p className="text-2xl" style={{ color: colors.primary }}>Your Score: {score}</p>
+        <div className="flex justify-center mt-4">
+          <button
+            onClick={handleRestart}
+            className="bg-blue-400 border-2 border-blue-400 hover:scale-95 text-white py-2 px-4 rounded-xl shadow-md transition duration-300 hover:bg-blue-500 mr-4"
+          >
+            Restart
+          </button>
+          <button
+            onClick={handleHome}
+            className="bg-neutral-500 border-2 border-neutral-500 hover:scale-95 text-white py-2 px-4 rounded-xl shadow-md transition duration-300 hover:bg-neutral-600"
+          >
+            Back to Home
+          </button>
+        </div>
       </div>
     );
   }
@@ -117,12 +144,27 @@ const Quiz: React.FC<QuizProps> = ({
     return (
       <div className="flex flex-col items-center justify-center min-h-screen"
         style={{ backgroundColor: colors.quaternary }}>
+        <Confetti />
         <h1 className="text-6xl font-extrabold mb-4" style={{ color: colors.primary }}>
-          Winner Winner Chicken Dinner!
+          🐔 Winner Winner Chicken Dinner!
         </h1>
-        <p className="text-2xl" style={{ color: colors.secondary }}>
+        <p className="text-2xl" style={{ color: colors.primary }}>
           You answered {score} questions correctly!
         </p>
+        <div className="flex justify-center mt-4">
+          <button
+            onClick={handleRestart}
+            className="bg-blue-400 border-2 border-blue-400 hover:scale-95 text-white py-2 px-4 rounded-xl shadow-md transition duration-300 hover:bg-blue-500 mr-4"
+          >
+            Restart
+          </button>
+          <button
+            onClick={handleHome}
+            className="bg-neutral-500 border-2 border-neutral-500 hover:scale-95 text-white py-2 px-4 rounded-xl shadow-md transition duration-300 hover:bg-neutral-600"
+          >
+            Back to Home
+          </button>
+        </div>
       </div>
     );
   }
@@ -131,7 +173,7 @@ const Quiz: React.FC<QuizProps> = ({
     <div className="flex flex-col items-center min-h-screen p-6"
       style={{ backgroundColor: colors.quaternary }}>
       <h1 className="text-4xl font-bold mb-4" style={{ color: colors.primary }}>{mode} Mode Quiz</h1>
-      <div className="w-full max-w-lg p-8 shadow-lg rounded-xl border border-zinc-700"
+      <div className="w-full max-w-lg p-8 shadow-lg rounded-xl"
         style={{ backgroundColor: colors.secondary }}>
         <Timer
           duration={timeLeft}
@@ -145,27 +187,20 @@ const Quiz: React.FC<QuizProps> = ({
         <Question
           questionData={shuffledQuestions[currentQuestion]}
           onAnswer={(answer) => {
-            clickSound.play();
             handleAnswer(answer);
           }}
           onSkip={() => {
             if (skips > 0) {
-              clickSound.play();
               setSkips(skips - 1);
               setCurrentQuestion((prev) => (prev + 1 >= shuffledQuestions.length ? prev : prev + 1));
             }
-          }}
-          colors={{
-            primary: colors.primary,
-            secondary: colors.secondary,
-            tertiary: colors.tertiary,
-            quaternary: colors.quaternary,
           }}
         />
         <div className="flex justify-center mt-4">
           <button
             onClick={() => {
               if (skips > 0) {
+                const clickSound = new Audio(clickSoundFile);
                 clickSound.play();
                 setSkips(skips - 1);
                 setCurrentQuestion((prev) =>
@@ -173,7 +208,8 @@ const Quiz: React.FC<QuizProps> = ({
                 );
               }
             }}
-            className="bg-red-600 text-white py-2 px-4 rounded-md shadow-md transition duration-300 hover:bg-green-500"
+            className={`py-2 px-4 rounded-xl shadow-md transition duration-300 ${skips === 0 ? "bg-neutral-900 opacity-50" : "bg-red-600 hover:bg-green-500"
+              } text-white`}
             disabled={skips === 0}
           >
             Skip Question ({skips})
