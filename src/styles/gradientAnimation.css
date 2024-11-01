@@ -1,0 +1,21 @@
+/* src/styles/gradientAnimation.css */
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 50% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  animation: gradient-animation 30s ease infinite; /* Animationsdauer auf 30s erhöht für sehr langsame Bewegung */
+  background-size: 300% 300%; /* Größere Hintergrundgröße für sanftere Übergänge */
+  background-image: linear-gradient(270deg, #262626, #78716c, #475569);
+}
+
