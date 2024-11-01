@@ -48,9 +48,7 @@ export default Timer;
 
 
 // TODO: backround von StartPage soll uber all sein
-// TODO: Winner Winner Chicken Dinner animation
 // TODO: Game Over animation
 // TODO: Settings mit sounds, farben
-// TODO: Achievements
 // TODO: Easter Egg
 // TODO: Event (Halloween, Christmas, New Year, Easter, and more.... )

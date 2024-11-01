@@ -5,6 +5,7 @@ import Timer from "./Timer";
 import winSound from "../assets/win.mp3";
 import loseSound from "../assets/lose.mp3";
 import clickSound from "../assets/click.mp3";
+import Confetti from "react-confetti"; // Importiere die Konfetti-Bibliothek
 
 type QuizProps = {
   questions: {
@@ -40,6 +41,7 @@ const Quiz: React.FC<QuizProps> = ({
   const [timeLeft, setTimeLeft] = useState(initialTime);
   const [isGameOver, setIsGameOver] = useState(false);
   const [isWinner, setIsWinner] = useState(false);
+  const [isConfetti, setIsConfetti] = useState(false); // State für Konfetti
 
   useEffect(() => {
     if (timeLeft <= 0) setIsGameOver(true);
@@ -50,6 +52,7 @@ const Quiz: React.FC<QuizProps> = ({
       new Audio(loseSound).play();
     } else if (isWinner) {
       new Audio(winSound).play();
+      setIsConfetti(true); // Konfetti aktivieren
     }
   }, [isGameOver, isWinner]);
 
@@ -84,8 +87,12 @@ const Quiz: React.FC<QuizProps> = ({
   if (isWinner) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+        {isConfetti && (
+          <Confetti width={window.innerWidth} height={window.innerHeight} />
+        )}{" "}
+        {/* Konfetti anzeigen */}
         <h1 className="text-6xl font-extrabold text-green-600 mb-4">
-          Winner Winner Chicken Dinner!
+          {mode} Winner!
         </h1>
         <p className="text-2xl">You answered {score} questions correctly!</p>
       </div>
