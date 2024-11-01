@@ -21,10 +21,10 @@ type QuizProps = {
   initialTime: number;
   mode: string;
   colors?: {
-    primary?: string;
-    secondary?: string;
-    tertiary?: string;
-    quaternary?: string;
+    primary: string;
+    secondary: string;
+    tertiary: string;
+    quaternary: string;
   };
 };
 
@@ -41,7 +41,12 @@ const Quiz: React.FC<QuizProps> = ({
   initialSkips,
   initialTime,
   mode,
-  colors,
+  colors = {
+    primary: "#000000", // Standardfarbe für primary
+    secondary: "#FFFFFF", // Standardfarbe für secondary
+    tertiary: "#4CAF50", // Standardfarbe für richtige Antworten
+    quaternary: "#F44336", // Standardfarbe für falsche Antworten
+  },
 }) => {
   const [shuffledQuestions] = useState(
     [...questions].sort(() => Math.random() - 0.5)
@@ -100,55 +105,80 @@ const Quiz: React.FC<QuizProps> = ({
 
   if (isGameOver) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-        <h1 className="text-6xl font-extrabold text-red-600 mb-4">Game Over</h1>
-        <p className="text-2xl">Your Score: {score}</p>
+      <div className="flex flex-col items-center justify-center min-h-screen"
+        style={{ backgroundColor: colors.quaternary }}>
+        <h1 className="text-6xl font-extrabold mb-4" style={{ color: colors.primary }}>Game Over</h1>
+        <p className="text-2xl" style={{ color: colors.secondary }}>Your Score: {score}</p>
       </div>
     );
   }
 
   if (isWinner) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-        <h1 className="text-6xl font-extrabold text-green-600 mb-4">
+      <div className="flex flex-col items-center justify-center min-h-screen"
+        style={{ backgroundColor: colors.quaternary }}>
+        <h1 className="text-6xl font-extrabold mb-4" style={{ color: colors.primary }}>
           Winner Winner Chicken Dinner!
         </h1>
-        <p className="text-2xl">You answered {score} questions correctly!</p>
+        <p className="text-2xl" style={{ color: colors.secondary }}>
+          You answered {score} questions correctly!
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col items-center bg-gray-100 min-h-screen p-6">
-      <h1 className="text-3xl font-bold mb-4">{mode} Mode Quiz</h1>
-      <div className="w-full max-w-md bg-white p-6 shadow-lg rounded-lg">
+    <div className="flex flex-col items-center min-h-screen p-6"
+      style={{ backgroundColor: colors.quaternary }}>
+      <h1 className="text-4xl font-bold mb-4" style={{ color: colors.primary }}>{mode} Mode Quiz</h1>
+      <div className="w-full max-w-lg p-8 shadow-lg rounded-xl border border-zinc-700"
+        style={{ backgroundColor: colors.secondary }}>
         <Timer
           duration={timeLeft}
           onTimeUp={() => setIsGameOver(true)}
           setTimeLeft={setTimeLeft}
         />
-        <p className="text-center text-lg font-semibold mb-4">
-          {currentQuestion + 1}/{shuffledQuestions.length}
+        <p className="text-center text-lg font-semibold mb-4" style={{ color: colors.primary }}>
+          Question {currentQuestion + 1}/{shuffledQuestions.length}
         </p>
         <Score score={score} skips={skips} />
         <Question
           questionData={shuffledQuestions[currentQuestion]}
           onAnswer={(answer) => {
-            clickSound.volume = 0.3;
             clickSound.play();
             handleAnswer(answer);
           }}
           onSkip={() => {
             if (skips > 0) {
-              clickSound.volume = 0.3;
               clickSound.play();
               setSkips(skips - 1);
-              setCurrentQuestion((prev) =>
-                prev + 1 >= shuffledQuestions.length ? prev : prev + 1
-              );
+              setCurrentQuestion((prev) => (prev + 1 >= shuffledQuestions.length ? prev : prev + 1));
             }
           }}
+          colors={{
+            primary: colors.primary,
+            secondary: colors.secondary,
+            tertiary: colors.tertiary,
+            quaternary: colors.quaternary,
+          }}
         />
+        <div className="flex justify-center mt-4">
+          <button
+            onClick={() => {
+              if (skips > 0) {
+                clickSound.play();
+                setSkips(skips - 1);
+                setCurrentQuestion((prev) =>
+                  prev + 1 >= shuffledQuestions.length ? prev : prev + 1
+                );
+              }
+            }}
+            className="bg-red-600 text-white py-2 px-4 rounded-md shadow-md transition duration-300 hover:bg-green-500"
+            disabled={skips === 0}
+          >
+            Skip Question ({skips})
+          </button>
+        </div>
       </div>
     </div>
   );
