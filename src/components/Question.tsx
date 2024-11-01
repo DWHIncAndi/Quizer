@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import winSound from "./assets/win.mp3";
-import loseSound from "./assets/lose.mp3";
-import clickSound from "./assets/click.mp3";
+import { shuffle } from "../utils/shuffle";
+import clickSoundFile from "../assets/click.mp3";
+
+const clickSound = new Audio(clickSoundFile);
 
 type QuestionProps = {
   questionData: {
@@ -11,14 +12,6 @@ type QuestionProps = {
   };
   onAnswer: (selectedAnswer: string) => void;
   onSkip: () => void;
-};
-
-const shuffleArray = (array: any[]): any[] => {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
 };
 
 const Question: React.FC<QuestionProps> = ({
@@ -31,31 +24,25 @@ const Question: React.FC<QuestionProps> = ({
   const [isFading, setIsFading] = useState(false);
 
   useEffect(() => {
-    setShuffledOptions(shuffleArray([...questionData.options]));
+    setShuffledOptions(shuffle([...questionData.options]));
     setSelectedAnswer(null);
-    setIsFading(false); // Animation bei neuer Frage zurücksetzen
+    setIsFading(false);
   }, [questionData]);
 
   const handleAnswerClick = (option: string) => {
-    clickSound.play(); // Spiele Sound bei Klick
+    clickSound.play();
     setSelectedAnswer(option);
-    setIsFading(true); // Startet das Fade-Out
+    setIsFading(true);
     setTimeout(() => {
-      if (questionData.correctAnswers.includes(option)) {
-        winSound.play(); // Spiele Gewinn-Sound
-      } else {
-        loseSound.play(); // Spiele Verlust-Sound
-      }
-      onAnswer(option); // Antwort übergeben, wenn die Animation endet
-      setIsFading(false); // Setzt für die neue Frage das Fade-In zurück
-    }, 500); // Zeit für das Fade-Out (500 ms)
+      onAnswer(option);
+      setIsFading(false);
+    }, 500);
   };
 
   return (
     <div
-      className={`flex flex-col items-center transition-opacity duration-500 ${
-        isFading ? "opacity-0" : "opacity-100"
-      }`}
+      className={`flex flex-col items-center transition-opacity duration-500 ${isFading ? "opacity-0" : "opacity-100"
+        }`}
     >
       <h2 className="text-xl font-medium mb-6 text-gray-800">
         {questionData.question}
@@ -68,8 +55,8 @@ const Question: React.FC<QuestionProps> = ({
             ? isCorrect
               ? "bg-green-500"
               : isSelected
-              ? "bg-red-500"
-              : "bg-red-500"
+                ? "bg-red-500"
+                : "bg-red-500"
             : "bg-blue-500 hover:bg-blue-600";
 
           return (
@@ -86,7 +73,7 @@ const Question: React.FC<QuestionProps> = ({
       </div>
       <button
         onClick={() => {
-          clickSound.play(); // Spiele Sound bei Skip
+          clickSound.play();
           onSkip();
         }}
         className="text-red-500 underline hover:text-red-600"
